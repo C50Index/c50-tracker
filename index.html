@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>C50 Index</title>
+</head>
+<body>
+<script>
+	function get(url, success) {
+		var request = new XMLHttpRequest();
+		request.open('GET', url, true);
+		request.onload = function() {
+		  if (request.status >= 200 && request.status < 400) {
+		    var resp = request.responseText;
+		    success(resp);
+		  }
+		};
+		request.send();
+	}
+
+	function redrawScreen(data) {
+		console.log(data);
+	}
+
+
+	var tid = setInterval( function () {
+	    if ( document.readyState !== 'complete' ) return;
+	    clearInterval( tid );       
+	    setInterval(function(){ get("https://min-api.cryptocompare.com/data/top/totalvol?limit=50&tsym=USD", redrawScreen) }, 3000);
+	}, 100 );
+</script>
+</body>
+</html>

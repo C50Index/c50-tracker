@@ -1,0 +1,8 @@
+{
+    "compilerOptions": {
+        "out": "js/app.js", 
+        "sourceMap": true, 
+        "target": "es5"
+    }, 
+    "include": ["**/*"],
+}
