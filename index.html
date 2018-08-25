@@ -1,32 +1,78 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<title>C50 Index</title>
+    <title>C50 Index</title>
 </head>
+
 <body>
-<script>
-	function get(url, success) {
-		var request = new XMLHttpRequest();
-		request.open('GET', url, true);
-		request.onload = function() {
-		  if (request.status >= 200 && request.status < 400) {
-		    var resp = request.responseText;
-		    success(resp);
-		  }
-		};
-		request.send();
-	}
+    <script>
+        function get(url, success) {
+            var request = new XMLHttpRequest();
+            request.open('GET', url, true);
+            request.onload = function() {
+                if (request.status >= 200 && request.status < 400) {
+                    var resp = request.responseText;
+                    success(JSON.parse(resp));
+                }
+            };
+            request.send();
+        }
 
-	function redrawScreen(data) {
-		console.log(data);
-	}
+        function h(nodeName, attributes, ...args) {
+            let children = args.length ? [].concat(...args) : null;
+            return {
+                nodeName,
+                attributes,
+                children
+            };
+        }
+
+        function render(vnode) {
+            if (vnode.split) return document.createTextNode(vnode);
+            let n = document.createElement(vnode.nodeName);
+            let as = vnode.attributes || {};
+            for (let k in as) n.setAttribute(k, as[k]);
+            (vnode.children || []).map(c => n.appendChild(render(c)));
+            return n;
+        }
+
+        let CoinsTable = function(data) {
+            let Coins = coins => coins.map(coin => {
+                let coinInfo = coin['CoinInfo'];
+                let conversionInfo = coin['ConversionInfo'];
+                return (h('tr', {},
+                    h('td', {}, coinInfo['Name']),
+                    h('td', {},
+                        h('img', {
+                            src: `https://www.cryptocompare.com${coinInfo['ImageUrl']}`,
+                            width: '50px',
+                            height: '50px'
+                        })
+                    ),
+                ));
+            });
+
+            return h('table', {}, Coins(data));
+        }
 
 
-	var tid = setInterval( function () {
-	    if ( document.readyState !== 'complete' ) return;
-	    clearInterval( tid );       
-	    setInterval(function(){ get("https://min-api.cryptocompare.com/data/top/totalvol?limit=50&tsym=USD", redrawScreen) }, 3000);
-	}, 100 );
-</script>
+        function drawScreen(response) {
+            document.body.appendChild(
+                render(h('div', {},
+                    CoinsTable(response["Data"])))
+            );
+        }
+
+
+        var tid = setInterval(function() {
+            if (document.readyState !== 'complete') return;
+            clearInterval(tid);
+            setInterval(function() {
+                get("https://min-api.cryptocompare.com/data/top/totalvol?limit=50&tsym=USD", drawScreen)
+            }, 3000);
+        }, 100);
+    </script>
 </body>
+
 </html>
