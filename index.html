@@ -55,7 +55,7 @@
                 let raw = conversionInfo['RAW'][0].split('~');
                 let price = raw[5];
                 let supply = conversionInfo['Supply'];
-                let marketCap = (price * supply).toLocaleString() + ' ' + coinInfo['Name'];
+                let marketCap = (price * supply).toLocaleString();
 
                 return (h('tr', {},
                     h('td', {class: 'tc', scope: 'col'}, "" + (i + 1)),
@@ -69,9 +69,9 @@
                         }),
                         coinInfo['FullName'])
                         ),
-                    h('td', {class: 'tr', scope: 'col'}, supply ? marketCap :  '_'),
+                    h('td', {class: 'tr', scope: 'col'}, supply ? '$' + marketCap :  '_'),
                     h('td', {class: 'tr', scope: 'col'}, '$' + price),
-                    h('td', {class: 'tr', scope: 'col'}, supply ? supply.toLocaleString() : '_'),
+                    h('td', {class: 'tr', scope: 'col'}, supply ? supply.toLocaleString() + ' ' + coinInfo['Name'] : '_'),
                 ));
             });
 
