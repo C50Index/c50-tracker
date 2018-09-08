@@ -38,10 +38,13 @@
         }
 
         let CoinsTable = function(data) {
-            let Coins = coins => coins.map(coin => {
+            let Coins = coins => coins.map((coin,i) => {
                 let coinInfo = coin['CoinInfo'];
                 let conversionInfo = coin['ConversionInfo'];
+                let price = conversionInfo['RAW'][0].split('~')[5];
+
                 return (h('tr', {},
+                    h('td', {}, "" + (i + 1)),
                     h('td', {}, coinInfo['Name']),
                     h('td', {},
                         h('img', {
@@ -50,29 +53,44 @@
                             height: '50px'
                         })
                     ),
+                    h('td', {}, '$' + price),
+                    h('td', {}, ),
                 ));
             });
 
-            return h('table', {}, Coins(data));
+            return (
+                h('table', {}, 
+                    h('th', {}, 'Rank'),
+                    h('th', {}, 'Ticker'),
+                    h('th', {}, 'Image'),
+                    h('th', {}, 'Price'),
+                    Coins(data),
+                    ));
         }
 
 
         function drawScreen(response) {
-            document.body.appendChild(
+            let children = (
                 render(h('div', {},
                     CoinsTable(response["Data"])))
             );
+            let app = document.getElementById('app');
+            if(app.firstChild) app.removeChild(app.firstChild);
+            app.appendChild(children);
         }
+
 
 
         var tid = setInterval(function() {
             if (document.readyState !== 'complete') return;
             clearInterval(tid);
+            get("https://min-api.cryptocompare.com/data/top/totalvol?limit=52&tsym=USD", drawScreen);
             setInterval(function() {
-                get("https://min-api.cryptocompare.com/data/top/totalvol?limit=50&tsym=USD", drawScreen)
+                get("https://min-api.cryptocompare.com/data/top/totalvol?limit=52&tsym=USD", drawScreen)
             }, 3000);
         }, 100);
     </script>
+    <div id='app'></div>
 </body>
 
 </html>
