@@ -11,28 +11,9 @@
         .w-100 {width: 100%;}
         .w-40 {width: 40%;}
         .w-30 {width: 30%;}
-        .container {
-            padding-right: 15px;
-            padding-left: 15px;
-            margin-right: auto;
-            margin-left: auto;
-        }
-        @media (min-width: 768px) {
-            .container {
-                width: 750px;
-            }
-        }
-        @media (min-width: 992px) {
-            .container {
-                width: 970px;
-            }
-        }
-        @media (min-width: 1200px) {
-            .container {
-                width: 1170px;
-            }
-        }
     </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
 </head>
 
 <body>
@@ -77,30 +58,30 @@
                 let marketCap = (price * supply).toLocaleString() + ' ' + coinInfo['Name'];
 
                 return (h('tr', {},
-                    h('td', {class: 'tc'}, "" + (i + 1)),
-                    h('td', {class: 'tl'},
-                    h('td', {class: 'dib'},
+                    h('td', {class: 'tc', scope: 'col'}, "" + (i + 1)),
+                    h('td', {class: 'tl', scope: 'col'},
+                    h('td', {class: 'dib', scope: 'col'},
                         h('img', {
-                            class: '',
+                            class: 'img-responsive',
                             src: `https://www.cryptocompare.com${coinInfo['ImageUrl']}`,
                             width: '25px',
                             height: '25px'
                         }),
                         coinInfo['FullName'])
                         ),
-                    h('td', {class: 'tr'}, supply ? marketCap :  '_'),
-                    h('td', {class: 'tr'}, '$' + price),
-                    h('td', {class: 'tr'}, supply ? supply.toLocaleString() : '_'),
+                    h('td', {class: 'tr', scope: 'col'}, supply ? marketCap :  '_'),
+                    h('td', {class: 'tr', scope: 'col'}, '$' + price),
+                    h('td', {class: 'tr', scope: 'col'}, supply ? supply.toLocaleString() : '_'),
                 ));
             });
 
             return (
-                h('table', {}, 
-                    h('th', {class: 'tc'}, '#'),
-                    h('th', {class: 'tl'}, 'Name'),
-                    h('th', {class: 'tr'}, 'Market Cap'),
-                    h('th', {class: 'tr'}, 'Price'),
-                    h('th', {class: 'tr'}, 'Circulating Supply'),
+                h('table', {class: 'table'}, 
+                    h('th', {class: 'tc', scope: 'col'}, '#'),
+                    h('th', {class: 'tl', scope: 'col'}, 'Name'),
+                    h('th', {class: 'tr', scope: 'col'}, 'Market Cap'),
+                    h('th', {class: 'tr', scope: 'col'}, 'Price'),
+                    h('th', {class: 'tr', scope: 'col'}, 'Circulating Supply'),
                     Coins(data),
                     ));
         }
@@ -129,13 +110,12 @@
     </script>
 
     <div class='container'>
-        <div class='w-100'>
-            <div class="w-100 dib tl">
+        <div class='w-100 tc'>
+            <div class="w-100 dib tc">
                 <img class='tc' width='50px' src='https://camo.githubusercontent.com/fddfe95308fb6a93060ac1526883c8fedde4b450/687474703a2f2f7777772e633530696e6465782e636f6d2f77702d636f6e74656e742f75706c6f6164732f323031382f30352f6335302d66696e616c6c6f676f3262312d312d65313532363232323731313737392d323036783330302e706e67' />
             </div>
-            <div div='dib w-30'>
-                <span><h2 class='dib'>C50 Tracker </h2>   50 Cryptos in 1</span>
-            </div>
+            <h2>C50 Tracker</h2>
+            <p class='lead'>50 Cryptos in 1</p>
         </div> 
     <div id='coinsTable'></div>
     </div>
