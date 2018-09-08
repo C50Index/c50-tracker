@@ -3,6 +3,36 @@
 
 <head>
     <title>C50 Index</title>
+    <style>
+        .tr {text-align: right;}
+        .tl {text-align: left;}
+        .tc {text-align: center;}
+        .dib {display: inline-block;}
+        .w-100 {width: 100%;}
+        .w-40 {width: 40%;}
+        .w-30 {width: 30%;}
+        .container {
+            padding-right: 15px;
+            padding-left: 15px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+        @media (min-width: 768px) {
+            .container {
+                width: 750px;
+            }
+        }
+        @media (min-width: 992px) {
+            .container {
+                width: 970px;
+            }
+        }
+        @media (min-width: 1200px) {
+            .container {
+                width: 1170px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -41,29 +71,36 @@
             let Coins = coins => coins.map((coin,i) => {
                 let coinInfo = coin['CoinInfo'];
                 let conversionInfo = coin['ConversionInfo'];
-                let price = conversionInfo['RAW'][0].split('~')[5];
+                let raw = conversionInfo['RAW'][0].split('~');
+                let price = raw[5];
+                let supply = conversionInfo['Supply'];
+                let marketCap = (price * supply).toLocaleString() + ' ' + coinInfo['Name'];
 
                 return (h('tr', {},
-                    h('td', {}, "" + (i + 1)),
-                    h('td', {}, coinInfo['Name']),
-                    h('td', {},
+                    h('td', {class: 'tc'}, "" + (i + 1)),
+                    h('td', {class: 'tl'},
+                    h('td', {class: 'dib'},
                         h('img', {
+                            class: '',
                             src: `https://www.cryptocompare.com${coinInfo['ImageUrl']}`,
-                            width: '50px',
-                            height: '50px'
-                        })
-                    ),
-                    h('td', {}, '$' + price),
-                    h('td', {}, ),
+                            width: '25px',
+                            height: '25px'
+                        }),
+                        coinInfo['FullName'])
+                        ),
+                    h('td', {class: 'tr'}, supply ? marketCap :  '_'),
+                    h('td', {class: 'tr'}, '$' + price),
+                    h('td', {class: 'tr'}, supply ? supply.toLocaleString() : '_'),
                 ));
             });
 
             return (
                 h('table', {}, 
-                    h('th', {}, 'Rank'),
-                    h('th', {}, 'Ticker'),
-                    h('th', {}, 'Image'),
-                    h('th', {}, 'Price'),
+                    h('th', {class: 'tc'}, '#'),
+                    h('th', {class: 'tl'}, 'Name'),
+                    h('th', {class: 'tr'}, 'Market Cap'),
+                    h('th', {class: 'tr'}, 'Price'),
+                    h('th', {class: 'tr'}, 'Circulating Supply'),
                     Coins(data),
                     ));
         }
@@ -71,10 +108,10 @@
 
         function drawScreen(response) {
             let children = (
-                render(h('div', {},
+                render(h('div', {class: 'container tc'},
                     CoinsTable(response["Data"])))
             );
-            let app = document.getElementById('app');
+            let app = document.getElementById('coinsTable');
             if(app.firstChild) app.removeChild(app.firstChild);
             app.appendChild(children);
         }
@@ -90,7 +127,18 @@
             }, 3000);
         }, 100);
     </script>
-    <div id='app'></div>
+
+    <div class='container'>
+        <div class='w-100'>
+            <div class="w-100 dib tl">
+                <img class='tc' width='50px' src='https://camo.githubusercontent.com/fddfe95308fb6a93060ac1526883c8fedde4b450/687474703a2f2f7777772e633530696e6465782e636f6d2f77702d636f6e74656e742f75706c6f6164732f323031382f30352f6335302d66696e616c6c6f676f3262312d312d65313532363232323731313737392d323036783330302e706e67' />
+            </div>
+            <div div='dib w-30'>
+                <span><h2 class='dib'>C50 Tracker </h2>   50 Cryptos in 1</span>
+            </div>
+        </div> 
+    <div id='coinsTable'></div>
+    </div>
 </body>
 
 </html>
