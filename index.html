@@ -90,25 +90,23 @@
             let drawScreen = bootstrap();
             let startDate = moment().year(2016).startOf('year');
             let prevDate = startDate;
+            let data;
+            let divisor;
 
-            get("aggregated.csv", (rawData) => {
-              var ctx = document.getElementById('chart').getContext('2d');
-              let divisor = rawData.split('\n')[0].split(',')[1];
-
-              let data = rawData.split('\n').map((row) => {
-                let s = row.split(',');
-
-                let date = new moment(s[0]);
+            var ctx = document.getElementById('chart').getContext('2d');
+            readCSV('aggregated.csv', (rows) => {
+              divisor = rows[0][1];
+              data = rows.map((row) => {
+                let date = new moment(row[0]);
                 // only one per month
 
                 if(date.isAfter(prevDate, 'month') && date.unix() > startDate.unix()) {
                   prevDate = date;
-                  return {x: date, y: (s[1] / divisor)};
+                  return {x: date, y: (row[1] / divisor)};
                 } else {
                   return false;
                 }
               }).filter(a => a);
-
               var scatterChart = new Chart(ctx, {
                   type: 'line',
                   data: {
@@ -128,7 +126,7 @@
                       }
                   }
               });
-        })
+            });
 
             get("https://min-api.cryptocompare.com/data/top/totalvol?limit=52&tsym=USD", drawScreen);
             setInterval(function() {

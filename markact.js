@@ -40,3 +40,8 @@ function get(url, success) {
     };
     request.send();
 }
+
+
+function readCSV(file, callback) {
+  get(file, (rawData) => callback(rawData.split('\n').map((r) => r.split(',')).filter(r => r)))
+}
