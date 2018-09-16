@@ -15,7 +15,6 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src='./markact.js'></script>
-	  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 </head>
 <body>
@@ -94,7 +93,7 @@
 
               let data = rawData.split('\n').map((row) => {
                 let s = row.split(',');
-                return {x: new moment(s[0]).valueOf(), y: (s[1] / divisor)};
+                return {x: new Date(s[0]), y: (s[1] / divisor)};
               });
 
               var scatterChart = new Chart(ctx, {
@@ -108,8 +107,7 @@
                   options: {
                       scales: {
                           xAxes: [{
-                              type: 'linear',
-                              position: 'bottom',
+                              type: 'time',
                               time: {
                                 unit: 'month'
                               }
