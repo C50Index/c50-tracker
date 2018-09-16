@@ -88,14 +88,26 @@
             if (document.readyState !== 'complete') return;
             clearInterval(tid);
             let drawScreen = bootstrap();
+            let startDate = moment().year(2016).startOf('year');
+            let prevDate = startDate;
+
             get("aggregated.csv", (rawData) => {
               var ctx = document.getElementById('chart').getContext('2d');
               let divisor = rawData.split('\n')[0].split(',')[1];
 
               let data = rawData.split('\n').map((row) => {
                 let s = row.split(',');
-                return {x: new Date(s[0]), y: (s[1] / divisor)};
-              });
+
+                let date = new moment(s[0]);
+                // only one per month
+
+                if(date.isAfter(prevDate, 'month') && date.unix() > startDate.unix()) {
+                  prevDate = date;
+                  return {x: date, y: (s[1] / divisor)};
+                } else {
+                  return false;
+                }
+              }).filter(a => a);
 
               var scatterChart = new Chart(ctx, {
                   type: 'line',
