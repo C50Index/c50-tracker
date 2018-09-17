@@ -42,6 +42,10 @@ function get(url, success) {
 }
 
 
-function readCSV(file, callback) {
-  get(file, (rawData) => callback(rawData.split('\n').map((r) => r.split(',')).filter(r => r)))
+function readCSV(file) {
+  return new Promise((resolve, reject) => {
+    get(file, (rawData) => {
+      resolve(rawData.split('\n').map((r) => r.split(',')).filter(r => r));
+    })
+  })
 }

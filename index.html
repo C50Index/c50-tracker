@@ -83,50 +83,56 @@
         }
 
 
+        function drawChart() {
+          let startDate = moment().year(2016).startOf('year');
+          let prevDate = startDate;
+
+          function draw(data) {
+            var scatterChart = new Chart(ctx, {
+                type: 'line',
+                data: data,
+                options: {scales: {xAxes: [{type: 'time',time: {unit: 'month'}}]}}
+            });
+          }
+
+          let transformRow = (row, idx, divisor,xIndex=0, yIndex=1) => {
+            if(idx == 0) return false;
+            let date = new moment(row[xIndex]);
+            // only one per month
+            if(date.isAfter(prevDate, 'month') && date.unix() > startDate.unix()) {
+              prevDate = date;
+
+              let weightedMarketCap = (row[yIndex] || 0) / divisor;
+              return {x: date, y: weightedMarketCap};
+            } else {
+              return false;
+            }
+          };
+
+          var ctx = document.getElementById('chart').getContext('2d');
+          readCSV('aggregated.csv').then((rows) => {
+            let result = rows.map((row, i) => transformRow(row, i, rows[0][1],0, 1)).filter(a => a);
+            return result;
+          }).then((aggregatedRows) => {
+            readCSV('all-coins/btc.csv').then((rows) => {
+              prevDate = startDate;
+              let newData =  rows.map((row, i) => transformRow(row, i, rows[0][1], 0, 4)).filter(a => a);
+              draw(
+                {datasets: [{label: 'Compared TO',data: newData, backgroundColor: 'rgba(0,0,0, .3)'},
+                {label: 'C50 Index', data: aggregatedRows, backgroundColor: 'rgba(230,250,92, .8)'}]}
+              )
+            })
+          });
+        }
+
 
         var tid = setInterval(function() {
             if (document.readyState !== 'complete') return;
             clearInterval(tid);
             let drawScreen = bootstrap();
-            let startDate = moment().year(2016).startOf('year');
-            let prevDate = startDate;
-            let data;
-            let divisor;
 
-            var ctx = document.getElementById('chart').getContext('2d');
-            readCSV('aggregated.csv', (rows) => {
-              divisor = rows[0][1];
-              data = rows.map((row) => {
-                let date = new moment(row[0]);
-                // only one per month
+            drawChart();
 
-                if(date.isAfter(prevDate, 'month') && date.unix() > startDate.unix()) {
-                  prevDate = date;
-                  return {x: date, y: (row[1] / divisor)};
-                } else {
-                  return false;
-                }
-              }).filter(a => a);
-              var scatterChart = new Chart(ctx, {
-                  type: 'line',
-                  data: {
-                      datasets: [{
-                          label: 'C50 Index',
-                          data: data
-                      }]
-                  },
-                  options: {
-                      scales: {
-                          xAxes: [{
-                              type: 'time',
-                              time: {
-                                unit: 'month'
-                              }
-                          }]
-                      }
-                  }
-              });
-            });
 
             get("https://min-api.cryptocompare.com/data/top/totalvol?limit=52&tsym=USD", drawScreen);
             setInterval(function() {
