@@ -41,11 +41,36 @@ function get(url, success) {
     request.send();
 }
 
-
-function readCSV(file) {
+/**
+* options:
+*  - headers : true / false
+*     - if true -> returns objects with headerName -> value
+*     - else returns string[][]
+*/
+function readCSV(file, options={}) {
   return new Promise((resolve, reject) => {
     get(file, (rawData) => {
-      resolve(rawData.split('\n').map((r) => r.split(',')).filter(r => r));
+      let rows = rawData.split('\n');
+      let result = [];
+      let headers = [];
+      let startIdx = 0;
+      if(options.headers) {
+        startIdx = 1;
+        headers = rows[0].split(',');
+      }
+
+      for(let i = startIdx; i < rows.length; i++) {
+        let splitted = rows[i].split(',');
+
+        if(options.headers) {
+          let row = {};
+          headers.map((k, i) => row[k] = splitted[i]);
+          result.push(row);
+        } else {
+          result.push(splitted);
+        }
+      }
+      resolve(result.filter(r => r));
     })
   })
 }

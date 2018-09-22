@@ -113,10 +113,10 @@
             }
           };
 
-          let getDivisor = (rows) => {
+          let getDivisor = (rows, dateKey, priceKey) => {
             for(let i = 0; i < rows.length; i++) {
-              if(rows[i][1] > 0 && new moment(rows[i][0]) >= startDate) {
-                return rows[i][5];
+              if(rows[i][priceKey] > 0 && new moment(rows[i][dateKey]) >= startDate) {
+                return rows[i][priceKey];
               }
             }
             return null;
@@ -124,14 +124,13 @@
 
           var ctx = document.getElementById('chart').getContext('2d');
           readCSV('aggregated.csv').then((rows) => {
-
             let result = rows.map((row, i) => transformRow(row, i, rows[0][1],0, 1)).filter(a => a);
             return result;
           }).then((aggregatedRows) => {
-            readCSV(`all-coins/${comparedTo}.csv`).then((rows) => {
-              let comparedDivisor = getDivisor(rows);
+            readCSV(`all-coins/${comparedTo}.csv`, {headers: true}).then((rows) => {
+              let comparedDivisor = getDivisor(rows, 'date', 'price(USD)');
               prevDate = startDate;
-              let newData =  rows.map((row, i) => transformRow(row, i, comparedDivisor, 0, 5)).filter(a => a);
+              let newData =  rows.map((row, i) => transformRow(row, i, comparedDivisor, 'date', 'price(USD)')).filter(a => a);
               draw(
                 {datasets: [{label: comparedTo.toUpperCase(),data: newData, backgroundColor: 'rgba(0,0,0, .3)'},
                 {label: 'C50 Index', data: aggregatedRows, backgroundColor: 'rgba(230,250,92, .8)'}]}
@@ -147,7 +146,6 @@
             let drawScreen = bootstrap();
 
             drawChart('btc');
-
 
             get("https://min-api.cryptocompare.com/data/top/totalvol?limit=52&tsym=USD", drawScreen);
             setInterval(function() {
