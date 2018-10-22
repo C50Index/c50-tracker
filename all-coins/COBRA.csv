@@ -1,1 +1,4 @@
-[#<Coin id: 1847306, time_unix: 1539270000, symbol: "COBRA", open: 0.019109, high: 0.021933, low: 0.019065, close: 0.021846, volume: 2275.0, marketcap: 0.0, created_at: "2018-10-13 08:58:01", updated_at: "2018-10-13 08:58:01">, #<Coin id: 1847307, time_unix: 1539183600, symbol: "COBRA", open: 0.016571, high: 0.019968, low: 0.015691, close: 0.019134, volume: 3834.0, marketcap: 0.0, created_at: "2018-10-13 08:58:01", updated_at: "2018-10-13 08:58:01">, #<Coin id: 1847308, time_unix: 1539097200, symbol: "COBRA", open: 0.016599, high: 0.016635, low: 0.015599, close: 0.016627, volume: 8511.0, marketcap: 0.0, created_at: "2018-10-13 08:58:01", updated_at: "2018-10-13 08:58:01">]
+id,time_unix,symbol,open,high,low,close,volume,marketcap,created_at,updated_at
+1847306,1539270000,COBRA,0.019109,0.021933,0.019065,0.021846,2275.0,0.0,2018-10-13 08:58:01 UTC,2018-10-13 08:58:01 UTC
+1847307,1539183600,COBRA,0.016571,0.019968,0.015691,0.019134,3834.0,0.0,2018-10-13 08:58:01 UTC,2018-10-13 08:58:01 UTC
+1847308,1539097200,COBRA,0.016599,0.016635,0.015599,0.016627,8511.0,0.0,2018-10-13 08:58:01 UTC,2018-10-13 08:58:01 UTC

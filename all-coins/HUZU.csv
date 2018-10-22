@@ -1,1 +1,2 @@
-[#<Coin id: 1847352, time_unix: 1539270000, symbol: "HUZU", open: 0.321723, high: 0.328332, low: 0.278363, close: 0.323746, volume: 2622.0, marketcap: 0.0, created_at: "2018-10-13 08:58:14", updated_at: "2018-10-13 08:58:14">]
+id,time_unix,symbol,open,high,low,close,volume,marketcap,created_at,updated_at
+1847352,1539270000,HUZU,0.321723,0.328332,0.278363,0.323746,2622.0,0.0,2018-10-13 08:58:14 UTC,2018-10-13 08:58:14 UTC

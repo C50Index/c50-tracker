@@ -1,1 +1,2 @@
-[#<Coin id: 1847346, time_unix: 1539270000, symbol: "ABBC", open: 0.3669, high: 0.379459, low: 0.353256, close: 0.371426, volume: 645747.0, marketcap: 0.0, created_at: "2018-10-13 08:58:10", updated_at: "2018-10-13 08:58:10">]
+id,time_unix,symbol,open,high,low,close,volume,marketcap,created_at,updated_at
+1847346,1539270000,ABBC,0.3669,0.379459,0.353256,0.371426,645747.0,0.0,2018-10-13 08:58:10 UTC,2018-10-13 08:58:10 UTC
