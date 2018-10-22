@@ -1,1 +1,4 @@
-[#<Coin id: 1847324, time_unix: 1539270000, symbol: "INCO", open: 0.010966, high: 0.012025, low: 0.007019, close: 0.007044, volume: 11723.0, marketcap: 0.0, created_at: "2018-10-13 08:58:04", updated_at: "2018-10-13 08:58:04">, #<Coin id: 1847325, time_unix: 1539183600, symbol: "INCO", open: 0.008615, high: 0.012067, low: 0.007066, close: 0.01097, volume: 14507.0, marketcap: 0.0, created_at: "2018-10-13 08:58:04", updated_at: "2018-10-13 08:58:04">, #<Coin id: 1847326, time_unix: 1539097200, symbol: "INCO", open: 0.008658, high: 0.008678, low: 0.008621, close: 0.008621, volume: 2896.0, marketcap: 0.0, created_at: "2018-10-13 08:58:04", updated_at: "2018-10-13 08:58:04">]
+id,time_unix,symbol,open,high,low,close,volume,marketcap,created_at,updated_at
+1847324,1539270000,INCO,0.010966,0.012025,0.007019,0.007044,11723.0,0.0,2018-10-13 08:58:04 UTC,2018-10-13 08:58:04 UTC
+1847325,1539183600,INCO,0.008615,0.012067,0.007066,0.01097,14507.0,0.0,2018-10-13 08:58:04 UTC,2018-10-13 08:58:04 UTC
+1847326,1539097200,INCO,0.008658,0.008678,0.008621,0.008621,2896.0,0.0,2018-10-13 08:58:04 UTC,2018-10-13 08:58:04 UTC

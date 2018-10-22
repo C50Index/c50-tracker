@@ -1,1 +1,2 @@
-[#<Coin id: 1847349, time_unix: 1539270000, symbol: "WIRE", open: 0.06096, high: 0.063513, low: 0.04981, close: 0.063261, volume: 13987.0, marketcap: 0.0, created_at: "2018-10-13 08:58:12", updated_at: "2018-10-13 08:58:12">]
+id,time_unix,symbol,open,high,low,close,volume,marketcap,created_at,updated_at
+1847349,1539270000,WIRE,0.06096,0.063513,0.04981,0.063261,13987.0,0.0,2018-10-13 08:58:12 UTC,2018-10-13 08:58:12 UTC

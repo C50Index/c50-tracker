@@ -1,1 +1,4 @@
-[#<Coin id: 1847330, time_unix: 1539270000, symbol: "JIYOX", open: 0.005024, high: 0.006432, low: 0.004313, close: 0.00587, volume: 534.0, marketcap: 0.0, created_at: "2018-10-13 08:58:06", updated_at: "2018-10-13 08:58:06">, #<Coin id: 1847331, time_unix: 1539183600, symbol: "JIYOX", open: 0.007998, high: 0.008175, low: 0.005001, close: 0.00503, volume: 1257.0, marketcap: 0.0, created_at: "2018-10-13 08:58:06", updated_at: "2018-10-13 08:58:06">, #<Coin id: 1847332, time_unix: 1539097200, symbol: "JIYOX", open: 0.007359, high: 0.008025, low: 0.006987, close: 0.008025, volume: 791.0, marketcap: 0.0, created_at: "2018-10-13 08:58:06", updated_at: "2018-10-13 08:58:06">]
+id,time_unix,symbol,open,high,low,close,volume,marketcap,created_at,updated_at
+1847330,1539270000,JIYOX,0.005024,0.006432,0.004313,0.00587,534.0,0.0,2018-10-13 08:58:06 UTC,2018-10-13 08:58:06 UTC
+1847331,1539183600,JIYOX,0.007998,0.008175,0.005001,0.00503,1257.0,0.0,2018-10-13 08:58:06 UTC,2018-10-13 08:58:06 UTC
+1847332,1539097200,JIYOX,0.007359,0.008025,0.006987,0.008025,791.0,0.0,2018-10-13 08:58:06 UTC,2018-10-13 08:58:06 UTC

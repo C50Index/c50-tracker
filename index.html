@@ -35,7 +35,7 @@
                 let marketCap = (price * supply).toLocaleString();
                 let shortName = coinInfo['Name'].toLowerCase();;
 
-                return (h('tr', {onclick: `drawChart('${shortName}')`, class: 'hover-bg-light-blue'},
+                return (h('tr', {onclick: `drawChart('${shortName.toUpperCase()}')`, class: 'hover-bg-light-blue'},
                     h('td', {class: 'tc', scope: 'col'}, "" + (i + 1)),
                     h('td', {class: 'tl', scope: 'col'},
                     h('td', {class: 'dib', scope: 'col'},
@@ -64,7 +64,6 @@
                     ));
         }
 
-
         function bootstrap() {
             let prev = "";
             let start = Date.now() / 1000 | 0;
@@ -86,8 +85,7 @@
             }
         }
 
-
-        function drawChart(comparedTo) {
+        function drawChart(symbol) {
           let startDate = moment().year(2016).startOf('year');
           let prevDate = startDate;
 
@@ -99,42 +97,33 @@
             });
           }
 
-          let transformRow = (row, idx, divisor,xIndex=0, yIndex=1) => {
-            if(idx == 0) return false;
-            let date = new moment(row[xIndex]);
-            // only one per month
-            if(date.isAfter(prevDate, 'month') && date.unix() > startDate.unix()) {
-              prevDate = date;
-
-              let weightedMarketCap = (row[yIndex] || 0) / divisor;
-              return {x: date, y: weightedMarketCap};
-            } else {
-              return false;
-            }
-          };
-
-          let getDivisor = (rows, dateKey, priceKey) => {
-            for(let i = 0; i < rows.length; i++) {
-              if(rows[i][priceKey] > 0 && new moment(rows[i][dateKey]) >= startDate) {
-                return rows[i][priceKey];
-              }
-            }
-            return null;
-          }
-
           var ctx = document.getElementById('chart').getContext('2d');
-          readCSV('aggregated.csv').then((rows) => {
-            let result = rows.map((row, i) => transformRow(row, i, rows[0][1],0, 1)).filter(a => a);
-            return result;
-          }).then((aggregatedRows) => {
-            readCSV(`all-coins/${comparedTo}.csv`, {headers: true}).then((rows) => {
-              let comparedDivisor = getDivisor(rows, 'date', 'price(USD)');
+          readCSV('all-coins/c50-index.csv', {headers: true}).then((rows) => {
+            // Date: "2016-12-30", C50Index: "101.21617490463628", market_weighted_divisor: "17019127036.0"
+            return rows;
+          }).then((c50IndexData) => {
+            readCSV(`all-coins/${symbol}.csv`, {headers: true}).then((rows) => {
               prevDate = startDate;
-              let newData =  rows.map((row, i) => transformRow(row, i, comparedDivisor, 'date', 'price(USD)')).filter(a => a);
-              draw(
-                {datasets: [{label: comparedTo.toUpperCase(),data: newData, backgroundColor: 'rgba(0,0,0, .3)'},
-                {label: 'C50 Index', data: aggregatedRows, backgroundColor: 'rgba(230,250,92, .8)'}]}
-              )
+
+              // calculate c50 index
+              let c50Index = c50IndexData.map(o => {
+                return {x: new moment(o['Date']), y: Number(o['C50Index'])}
+              })
+
+
+              readCSV('all-coins/market-weighted-divisors.csv', {headers: true}).then((rows) => {
+                return Number(rows.filter(x => x['symbol'] === symbol)[0]['market_weighted_divisor']);
+              }).then((divisor) => {
+                let comparedData = rows.map(o => {
+                  return {x: new moment(o['time_unix'], "X"), y: Number(o['marketcap']) / divisor}
+                });
+                
+
+                draw(
+                  {datasets: [{label: symbol,data: comparedData, backgroundColor: 'rgba(0,0,0, .3)'},
+                  {label: 'C50 Index', data: c50Index, backgroundColor: 'rgba(230,250,92, .8)'}]}
+                )
+              })
             })
           });
         }
@@ -145,7 +134,7 @@
             clearInterval(tid);
             let drawScreen = bootstrap();
 
-            drawChart('btc');
+            drawChart('BTC');
 
             get("https://min-api.cryptocompare.com/data/top/totalvol?limit=52&tsym=USD", drawScreen);
             setInterval(function() {

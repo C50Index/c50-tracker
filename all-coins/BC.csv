@@ -1,1 +1,3 @@
-[#<Coin id: 1847246, time_unix: 1539270000, symbol: "BC", open: 0.088322, high: 0.108745, low: 0.042238, close: 0.107795, volume: 451.0, marketcap: 0.0, created_at: "2018-10-13 08:57:53", updated_at: "2018-10-13 08:57:53">, #<Coin id: 1847247, time_unix: 1539183600, symbol: "BC", open: 0.088931, high: 0.089268, low: 0.087909, close: 0.088438, volume: 687.0, marketcap: 0.0, created_at: "2018-10-13 08:57:53", updated_at: "2018-10-13 08:57:53">]
+id,time_unix,symbol,open,high,low,close,volume,marketcap,created_at,updated_at
+1847246,1539270000,BC,0.088322,0.108745,0.042238,0.107795,451.0,0.0,2018-10-13 08:57:53 UTC,2018-10-13 08:57:53 UTC
+1847247,1539183600,BC,0.088931,0.089268,0.087909,0.088438,687.0,0.0,2018-10-13 08:57:53 UTC,2018-10-13 08:57:53 UTC
