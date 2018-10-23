@@ -86,14 +86,43 @@
         }
 
         function drawChart(symbol) {
-          let startDate = moment().year(2016).startOf('year');
-          let prevDate = startDate;
+          let c50beginningPrice = null;
+          let comparedBeginningPrice = null;
+
+          let startDate = moment().year(2017).startOf('year');
 
           function draw(data) {
             var scatterChart = new Chart(ctx, {
                 type: 'line',
                 data: data,
-                options: {scales: {xAxes: [{type: 'time',time: {unit: 'month'}}]}}
+                options: {scales: {
+                  xAxes: [{type: 'time',time: {unit: 'month'}}],
+                  yAxes: [{
+                    scaleLabel: {
+                      display: true,
+                      labelString: 'Normalized C50 Index'
+                    }
+                  }]
+                },
+                tooltips: {
+                    callbacks: {
+                        title: function(item, data) {
+                          var date = item.xLabel;
+                          return new moment(date);
+                        },
+                        label: function(item, data) {
+                        var datasetLabel=data.datasets[item.datasetIndex].label||'';
+                        var date = item.xLabel;
+                        var value = item.yLabel;
+                        if(datasetLabel === symbol) {
+                          return  datasetLabel + ': $'+ (value * comparedBeginningPrice).toLocaleString();
+                        } else {
+                          return datasetLabel + ': ' + (value * c50beginningPrice).toLocaleString();
+                          }
+                        }
+                    }
+                }
+              }
             });
           }
 
@@ -103,28 +132,34 @@
             return rows;
           }).then((c50IndexData) => {
             readCSV(`all-coins/${symbol}.csv`, {headers: true}).then((rows) => {
-              prevDate = startDate;
 
-              // calculate c50 index
+              // calculate c50 index and normalize
               let c50Index = c50IndexData.map(o => {
-                return {x: new moment(o['Date']), y: Number(o['C50Index'])}
+                let time = new moment(o['Date']);
+                  if(!c50beginningPrice) c50beginningPrice = Number(o['C50Index']);
+                  return {x: time, y: Number(o['C50Index']) / c50beginningPrice}
               })
 
+              let comparedData = rows.map(o => {
+                let time =  new moment(o['time_unix'], "X");
+                if(time >= startDate) {
+                  if(!comparedBeginningPrice) comparedBeginningPrice = Number(o['open']);
+                  return {x: time, y: Number(o['open']) / comparedBeginningPrice}
+                } else {
+                  return false;
+                }
+              }).filter(x => x);
 
-              readCSV('all-coins/market-weighted-divisors.csv', {headers: true}).then((rows) => {
-                return Number(rows.filter(x => x['symbol'] === symbol)[0]['market_weighted_divisor']);
-              }).then((divisor) => {
-                let comparedData = rows.map(o => {
-                  return {x: new moment(o['time_unix'], "X"), y: Number(o['marketcap']) / divisor}
-                });
-                
+                //view-source:http://www.chartjs.org/samples/latest/scales/time/financial.html
+                let dataStyles = {pointRadius: 0, fill: true, type: "line", lineTension: 0, borderWidth: 2};
 
                 draw(
-                  {datasets: [{label: symbol,data: comparedData, backgroundColor: 'rgba(0,0,0, .3)'},
-                  {label: 'C50 Index', data: c50Index, backgroundColor: 'rgba(230,250,92, .8)'}]}
+                  {datasets: [
+                  {label: symbol, data: comparedData, backgroundColor: 'rgba(0,0,0, .3)', ...dataStyles},
+                  {label: 'C50 Index', data: c50Index, backgroundColor: 'rgba(230,250,92, .8)', ...dataStyles}
+                ]}
                 )
               })
-            })
           });
         }
 
