@@ -1,3 +1,5 @@
-# c50-tracker
+# C50 Tracker
 
-Top the 50 top cryptocurrencies in an index
+Track the C50 Index.  50 Cryptocurrencies in 1
+
+http://tracker.c50index.com
