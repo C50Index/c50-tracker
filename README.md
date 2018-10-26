@@ -1,5 +1,4 @@
-# C50 Tracker
+# C50 Index Tracker 
+(http://tracker.c50index.com)
 
-Track the C50 Index.  50 Cryptocurrencies in 1
-
-http://tracker.c50index.com
+![image](https://user-images.githubusercontent.com/5359580/47540492-804c7a80-d910-11e8-8a9d-a27f73349373.png)
