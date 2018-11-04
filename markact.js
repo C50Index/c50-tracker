@@ -9,21 +9,37 @@ function h(nodeName, attributes, ...args) {
     };
 }
 
-function fastRender(prev, vnode) {
-    if (JSON.stringify(prev) === JSON.stringify(vnode)) return;
-    if (vnode.split) return document.createTextNode(vnode);
-    let n = document.createElement(vnode.nodeName);
-    let as = vnode.attributes || {};
-    for (let k in as) n.setAttribute(k, as[k]);
-    (vnode.children || []).map(c => n.appendChild(render(c)));
-    return n;
+function shuffle(array) {
+    let counter = array.length;
+
+    // While there are elements in the array
+    while (counter > 0) {
+        // Pick a random index
+        let index = Math.floor(Math.random() * counter);
+
+        // Decrease counter by 1
+        counter--;
+
+        // And swap the last element with it
+        let temp = array[counter];
+        array[counter] = array[index];
+        array[index] = temp;
+    }
+
+    return array;
 }
 
 function render(vnode) {
     if (vnode.split) return document.createTextNode(vnode);
     let n = document.createElement(vnode.nodeName);
     let as = vnode.attributes || {};
-    for (let k in as) n.setAttribute(k, as[k]);
+    for (let k in as){
+          if(typeof as[k] === "function") {
+            n[k] = as[k];
+          } else {
+            n.setAttribute(k, as[k]);
+          }
+        }
     (vnode.children || []).map(c => n.appendChild(render(c)));
     return n;
 }

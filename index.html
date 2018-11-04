@@ -20,74 +20,53 @@
     <script src='./markact.js'></script>
 	  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-98318782-11"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'UA-98318782-11');
-    </script>
-
 </head>
 <body>
     <script>
         // Parse CSV in ruby
-        //  h = {}; (Dir.entries('all-coins') - ['.', '..']).map{|f| h[f.split('.')[0]] = CSV.read("all-coins/#{f}", headers: true).map(&:to_h)}
         let CoinsTable = function(data) {
             let Coins = coins => coins.map((coin,i) => {
-                let coinInfo = coin['CoinInfo'];
-                let conversionInfo = coin['ConversionInfo'];
-                let raw = conversionInfo['RAW'][0].split('~');
-                let price = raw[5];
-                let supply = conversionInfo['Supply'];
-                let marketCap = (price * supply).toLocaleString();
-                let shortName = coinInfo['Name'].toLowerCase();;
+                if(!coin) return;
+                if(!coin.name) return;
+                let name = coin.name
+                let symbol = coin.symbol;
+                let slug = coin.slug;
+                let marketcap = Number(coin.marketcap).toLocaleString();
+                let closePrice = Number(coin.close).toLocaleString();
 
-                return (h('tr', {onclick: `drawChart('${shortName.toUpperCase()}')`, class: 'hover-bg-light-blue'},
+
+                return (h('tr', {onclick: () => drawChart(symbol), class: 'hover-bg-light-blue'},
                     h('td', {class: 'tc', scope: 'col'}, "" + (i + 1)),
                     h('td', {class: 'tl', scope: 'col'},
                     h('td', {class: 'dib', scope: 'col'},
                         h('img', {
                             class: 'img-responsive',
-                            src: `https://www.cryptocompare.com${coinInfo['ImageUrl']}`,
+                            src: `https://cdn.answrly.com/c50/coin-images/${slug}.png`,
                             width: '25px',
                             height: '25px'
                         }),
-                        coinInfo['FullName'])
+                        name)
                         ),
-                    h('td', {class: 'tr', scope: 'col'}, supply ? '$' + marketCap :  '_'),
-                    h('td', {class: 'tr', scope: 'col'}, '$' + price),
-                    h('td', {class: 'tr', scope: 'col'}, supply ? supply.toLocaleString() + ' ' + coinInfo['Name'] : '_'),
+                    h('td', {class: 'tr', scope: 'col'}, '$' + marketcap),
+                    h('td', {class: 'tr', scope: 'col'}, '$' + closePrice),
                 ));
-            });
+            }).filter(x => x);
 
             return (
                 h('table', {class: 'table table-hover'},
                     h('th', {class: 'tc', scope: 'col'}, '#'),
                     h('th', {class: 'tl', scope: 'col'}, 'Name'),
                     h('th', {class: 'tr', scope: 'col'}, 'Market Cap'),
-                    h('th', {class: 'tr', scope: 'col'}, 'Price'),
-                    h('th', {class: 'tr', scope: 'col'}, 'Circulating Supply'),
+                    h('th', {class: 'tr', scope: 'col'}, 'Last Close'),
                     Coins(data),
                     ));
         }
 
         function bootstrap() {
-            let prev = "";
-            let start = Date.now() / 1000 | 0;
-            return (response) => {
-                if(prev === response) return console.log('Equal skipping');
-                let now = Date.now() / 1000 | 0 ;
-                console.log('Updating after ' + (now - start) + ' seconds.');
-                start = now;
-                prev = response;
-                response = JSON.parse(response);
-
+            return (data) => {
                 let children = (
                     render(h('div', {class: 'container tc'},
-                        CoinsTable(response["Data"])))
+                        CoinsTable(data)))
                 );
                 let app = document.getElementById('coinsTable');
                 if(app.firstChild) app.removeChild(app.firstChild);
@@ -153,8 +132,8 @@
               let comparedData = rows.map(o => {
                 let time =  new moment(o['time_unix'], "X");
                 if(time >= startDate) {
-                  if(!comparedBeginningPrice) comparedBeginningPrice = Number(o['open']);
-                  return {x: time, y: Number(o['open']) / comparedBeginningPrice}
+                  if(!comparedBeginningPrice) comparedBeginningPrice = Number(o['close']);
+                  return {x: time, y: Number(o['close']) / comparedBeginningPrice}
                 } else {
                   return false;
                 }
@@ -181,11 +160,8 @@
 
             drawChart('BTC');
 
-            get("https://min-api.cryptocompare.com/data/top/totalvol?limit=52&tsym=USD", drawScreen);
-            setInterval(function() {
-                get("https://min-api.cryptocompare.com/data/top/totalvol?limit=52&tsym=USD", drawScreen)
-            }, 30000);
-        }, 100);
+            readCSV('all-coins/c50-tracker-summary.csv', {headers: true}).then(drawScreen);
+          }, 100);
     </script>
 
     <div class='container'>
@@ -200,6 +176,15 @@
         <canvas id="chart" style="width: 100%; height: 250px"></div>
       <div id='coinsTable'></div>
     </div>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-98318782-11"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-98318782-11');
+</script>
 
 </body>
 
