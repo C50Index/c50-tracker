@@ -77,6 +77,7 @@
         function drawChart(symbol) {
           let c50beginningPrice = null;
           let comparedBeginningPrice = null;
+          let startTimeUnix = 1483196400; // 1/1/2017
 
           let startDate = moment().year(2017).startOf('year');
 
@@ -85,7 +86,12 @@
                 type: 'line',
                 data: data,
                 options: {scales: {
-                  xAxes: [{type: 'time',time: {unit: 'month'}}],
+                  xAxes: [
+                    {
+                      type: 'time',
+                      time: {unit: 'month'},
+                      distribution: 'series',
+                    }],
                   yAxes: [{
                     scaleLabel: {
                       display: true,
@@ -126,14 +132,29 @@
               let c50Index = c50IndexData.map(o => {
                 let time = new moment(o['Date']);
                   if(!c50beginningPrice) c50beginningPrice = Number(o['C50Index']);
-                  return {x: time, y: Number(o['C50Index']) / c50beginningPrice}
+                  return {x: time, y: (Number(o['C50Index']) - c50beginningPrice) / c50beginningPrice}
               })
 
-              let comparedData = rows.map(o => {
+              let comparedBeginningPrice = null;
+               rows.sort((a, b) => Number(a['time_unix']) - Number(b['time_unix']))
+                        .filter(r => {
+                          if(!comparedBeginningPrice && Number(r['time_unix']) >= startTimeUnix) {
+                            comparedBeginningPrice = Number(r['close']);
+                            return true;
+                          } else {
+                            return false;
+                          }
+                        })[0]['close'];
+
+              // document.getElementById('test').innerHTML = "Compared price: " + Number(comparedBeginningPrice);
+
+              let comparedData = rows.sort((a,b) => Number(a['time_unix']) - Number(b['time_unix']) ).map(o => {
                 let time =  new moment(o['time_unix'], "X");
-                if(time >= startDate) {
-                  if(!comparedBeginningPrice) comparedBeginningPrice = Number(o['close']);
-                  return {x: time, y: Number(o['close']) / comparedBeginningPrice}
+                let normalizedPrice = (Number(o['close']) - comparedBeginningPrice) / comparedBeginningPrice;
+
+                if(time.unix() >= startTimeUnix && !!normalizedPrice) {
+                  console.log(normalizedPrice);
+                  return {x: time, y: normalizedPrice}
                 } else {
                   return false;
                 }
@@ -174,6 +195,7 @@
             <a href='all-coins/c50-index.csv' download='c50-index.csv' style='color: #111111'; text-align: right;>(Download CSV)</a>
         </div>
         <canvas id="chart" style="width: 100%; height: 250px"></div>
+      <div id='test'></div>
       <div id='coinsTable'></div>
     </div>
     <!-- Global site tag (gtag.js) - Google Analytics -->
