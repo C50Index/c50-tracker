@@ -23,6 +23,7 @@
 </head>
 <body>
     <script>
+        let chartInstance = null;
         // Parse CSV in ruby
         let CoinsTable = function(data) {
             let Coins = coins => coins.map((coin,i) => {
@@ -75,6 +76,7 @@
         }
 
         function drawChart(symbol) {
+
           let c50beginningPrice = null;
           let comparedBeginningPrice = null;
           let startTimeUnix = 1483196400; // 1/1/2017
@@ -82,7 +84,8 @@
           let startDate = moment().year(2017).startOf('year');
 
           function draw(data) {
-            var scatterChart = new Chart(ctx, {
+            if(!!chartInstance) chartInstance.destroy();
+            chartInstance = new Chart(ctx, {
                 type: 'line',
                 data: data,
                 options: {scales: {
@@ -193,10 +196,9 @@
             <h2>C50 Tracker</h2>
             <p class='lead'>50 Cryptos in 1</p>
             <a href='all-coins/c50-index.csv' download='c50-index.csv' style='color: #111111'; text-align: right;>(Download CSV)</a>
-        </div>
         <canvas id="chart" style="width: 100%; height: 250px"></div>
-      <div id='test'></div>
-      <div id='coinsTable'></div>
+      </div>
+      <div id='coinsTable' style='overflow-y: scroll; display: absolute; width: 100%; height: 50%; bottom: 0px;'></div>
     </div>
     <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-98318782-11"></script>
