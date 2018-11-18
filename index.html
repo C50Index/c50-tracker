@@ -18,8 +18,10 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src='./markact.js'></script>
+    <script src="./technical-indicators.js"></script>
 	  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
 </head>
 <body>
     <script>
@@ -151,7 +153,11 @@
 
               // document.getElementById('test').innerHTML = "Compared price: " + Number(comparedBeginningPrice);
 
-              let comparedData = rows.sort((a,b) => Number(a['time_unix']) - Number(b['time_unix']) ).map(o => {
+              let sortedComparedRows = rows.sort((a,b) => Number(a['time_unix']) - Number(b['time_unix']) );
+              let movingAvg = twoHundredDayMovingAverage(sortedComparedRows);
+              document.getElementById('200day').innerText = movingAvg;
+
+              let comparedData = sortedComparedRows.map(o => {
                 let time =  new moment(o['time_unix'], "X");
                 let normalizedPrice = (Number(o['close']) - comparedBeginningPrice) / comparedBeginningPrice;
 
@@ -197,6 +203,7 @@
             <p class='lead'>50 Cryptos in 1</p>
             <a href='all-coins/c50-index.csv' download='c50-index.csv' style='color: #111111'; text-align: right;>(Download CSV)</a>
         <canvas id="chart" style="width: 100%; height: 250px"></div>
+        <div>200 day moving average: <span id='200day'></span></div>
       </div>
       <div id='coinsTable' style='overflow-y: scroll; display: absolute; width: 100%; height: 50%; bottom: 0px;'></div>
     </div>
