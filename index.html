@@ -154,8 +154,7 @@
               // document.getElementById('test').innerHTML = "Compared price: " + Number(comparedBeginningPrice);
 
               let sortedComparedRows = rows.sort((a,b) => Number(a['time_unix']) - Number(b['time_unix']) );
-              let movingAvg = twoHundredDayMovingAverage(sortedComparedRows);
-              document.getElementById('200day').innerText = movingAvg;
+              document.getElementById('200day').innerText = twoHundredDayMovingAverage(sortedComparedRows).signal;
 
               let comparedData = sortedComparedRows.map(o => {
                 let time =  new moment(o['time_unix'], "X");
