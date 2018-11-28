@@ -100,7 +100,7 @@
                   yAxes: [{
                     scaleLabel: {
                       display: true,
-                      labelString: 'Normalized C50 Index'
+                      labelString: 'Normalized C50 Index %'
                     }
                   }]
                 },
@@ -173,8 +173,8 @@
 
                 draw(
                   {datasets: [
-                  {label: symbol, data: comparedData, backgroundColor: 'rgba(0,0,0, .3)', ...dataStyles},
-                  {label: 'C50 Index', data: c50Index, backgroundColor: 'rgba(230,250,92, .8)', ...dataStyles}
+                  {label: symbol, data: comparedData, backgroundColor: '#bcbca3', ...dataStyles},
+                  {label: 'C50 Index', data: c50Index, backgroundColor: '#2875e3', ...dataStyles}
                 ]}
                 )
               })
@@ -196,7 +196,7 @@
     <div class='container'>
         <div class='w-100 tc'>
             <div class="w-100 dib tc">
-                <img class='tc' width='50px' src='https://camo.githubusercontent.com/fddfe95308fb6a93060ac1526883c8fedde4b450/687474703a2f2f7777772e633530696e6465782e636f6d2f77702d636f6e74656e742f75706c6f6164732f323031382f30352f6335302d66696e616c6c6f676f3262312d312d65313532363232323731313737392d323036783330302e706e67' />
+                <img class='tc' width='50px' src='http://www.c50index.com/wp-content/uploads/2018/11/1-newlogo-1-150x150.png' />
             </div>
             <h2>C50 Tracker</h2>
             <p class='lead'>50 Cryptos in 1</p>
