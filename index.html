@@ -26,9 +26,11 @@
 <body>
     <script>
         let chartInstance = null;
+
         // Parse CSV in ruby
         let CoinsTable = function(data) {
-            let Coins = coins => coins.sort((a, b) => (Number(a.marketcap) - Number(b.marketcap))).reverse().map((coin,i) => {
+            let Coins = (coins) => coins.
+              sort((a, b) => (Number(a.marketcap) - Number(b.marketcap))).reverse().map((coin,i) => {
                 if(!coin) return;
                 if(!coin.name) return;
                 let name = coin.name
@@ -58,7 +60,7 @@
             return (
                 h('table', {class: 'table table-hover'},
                     h('th', {class: 'tc', scope: 'col'}, '#'),
-                    h('th', {class: 'tl', scope: 'col'}, 'Name'),
+                    h('th', {class: 'tl', scope: 'col', onclick: () => bootstrap('name')}, 'Name'),
                     h('th', {class: 'tr', scope: 'col'}, 'Market Cap'),
                     h('th', {class: 'tr', scope: 'col'}, 'Last Close'),
                     Coins(data),
@@ -67,13 +69,10 @@
 
         function bootstrap() {
             return (data) => {
-                let children = (
-                    render(h('div', {class: 'container tc'},
-                        CoinsTable(data)))
-                );
-                let app = document.getElementById('coinsTable');
-                if(app.firstChild) app.removeChild(app.firstChild);
-                app.appendChild(children);
+                renderAt(
+                  render(h('div', {class: 'container tc'},
+                    CoinsTable(data)))
+                  , 'coinsTable');
             }
         }
 
@@ -154,7 +153,12 @@
               // document.getElementById('test').innerHTML = "Compared price: " + Number(comparedBeginningPrice);
 
               let sortedComparedRows = rows.sort((a,b) => Number(a['time_unix']) - Number(b['time_unix']) );
-              document.getElementById('200day').innerText = twoHundredDayMovingAverage(sortedComparedRows).signal;
+
+
+              renderAt(render(h('div',{},
+                allTechnicalIndicators(sortedComparedRows).map(
+                  (indicator) => h('div', {}, h('span', {}, indicator.name +" : " +  indicator.signal + " " + indicator.value)))
+              )), 'technicalIndicators');
 
               let comparedData = sortedComparedRows.map(o => {
                 let time =  new moment(o['time_unix'], "X");
@@ -202,7 +206,7 @@
             <p class='lead'>50 Cryptos in 1</p>
             <a href='all-coins/c50-index.csv' download='c50-index.csv' style='color: #111111'; text-align: right;>(Download CSV)</a>
         <canvas id="chart" style="width: 100%; height: 250px"></div>
-        <div>200 day moving average: <span id='200day'></span></div>
+        <div>technical Indicators: <span id='technicalIndicators'></span></div>
       </div>
       <div id='coinsTable' style='overflow-y: scroll; display: absolute; width: 100%; height: 50%; bottom: 0px;'></div>
     </div>

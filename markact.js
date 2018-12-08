@@ -44,6 +44,14 @@ function render(vnode) {
     return n;
 }
 
+function renderAt(children, id) {
+  let app = document.getElementById(id);
+  if(app.firstChild) app.removeChild(app.firstChild);
+  app.appendChild(children);
+};
+
+
+
 function get(url, success) {
     var request = new XMLHttpRequest();
     request.open('GET', url, true);
