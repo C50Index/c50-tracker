@@ -1,59 +1,59 @@
 name,symbol,slug,marketcap,close
 Cardano,ADA,cardano,1934466507.0,0.074321
-Ardor,ARDR,ardor,109889944.0,0.112206
-Ark,ARK,ark,82274943.0,0.793608
-Basic Attention Token,BAT,basic-attention-token,251992404.0,0.274514
-Bitcoin Cash,BCH,bitcoin-cash,7686301053.0,442.45
-Bytecoin,BCN,bytecoin-bcn,0.0,0.001293
-Binance Coin,BNB,binance-coin,1279519261.0,9.75
-Bitcoin,BTC,bitcoin,110880236966.0,6388.44
+Ardor,ARDR,ardor,52395497.0,0.052448
+Ark,ARK,ark,36421371.0,0.340866
+Basic Attention Token,BAT,basic-attention-token,149346228.0,0.126409
+Bitcoin Cash,BCH,bitcoin-cash,10022537741.0,574.43
+Bytecoin,BCN,bytecoin-bcn,114306322.0,0.000621
+Binance Coin,BNB,binance-coin,1262337649.0,9.65
+Bitcoin,BTC,bitcoin,61303965508.0,3521.1
 Bitcoin Gold,BTG,bitcoin-gold,462340154.0,27.43
-BitShares,BTS,bitshares,266956000.0,0.095519
-Civic,CVC,civic,46226958.0,0.135071
-Dash,DASH,dash,1303236917.0,154.7
+BitShares,BTS,bitshares,95942194.0,0.035832
+Civic,CVC,civic,46628785.0,0.136063
+Dash,DASH,dash,574337061.0,67.63
 Streamr DATAcoin,DATA,streamr-datacoin,27091213.0,0.040505
-Decred,DCR,decred,354737124.0,40.52
-DigiByte,DGB,digibyte,220160465.0,0.021522
-Dogecoin,DOGE,dogecoin,0.0,0.003733
+Decred,DCR,decred,154122063.0,17.23
+DigiByte,DGB,digibyte,106918468.0,0.009588
+Dogecoin,DOGE,dogecoin,246818848.0,0.002104
 Dragonchain,DRGN,dragonchain,47315360.0,0.209231
-EOS,EOS,eos,4903114800.0,5.38
-Ethereum Classic,ETC,ethereum-classic,963534236.0,9.11
-Ethereum,ETH,ethereum,20615851076.0,200.19
-Factom,FCT,factom,39790214.0,4.55
-FunFair,FUN,funfair,71826020.0,0.013552
-GameCredits,GAME,gamecredits,11813623.0,0.165391
-Gas,GAS,gas,52497156.0,5.33
-Gnosis,GNO,gnosis-gno,21300284.0,19.58
-Golem,GNT,golem-network-tokens,163071140.0,0.169896
-HyperCash,HC,hypercash,83684141.0,1.91
-Kyber Network,KNC,kyber-network,56587232.0,0.448023
+EOS,EOS,eos,4988779685.0,5.5
+Ethereum Classic,ETC,ethereum-classic,409746021.0,3.84
+Ethereum,ETH,ethereum,9671177427.0,93.29
+Factom,FCT,factom,103422632.0,11.83
+FunFair,FUN,funfair,65672407.0,0.012679
+GameCredits,GAME,gamecredits,4519225.0,0.064712
+Gas,GAS,gas,52014372.0,5.14
+Gnosis,GNO,gnosis-gno,12569087.0,11.38
+Golem,GNT,golem-network-tokens,62808414.0,0.065436
+HyperCash,HC,hypercash,79841018.0,1.83
+Kyber Network,KNC,kyber-network,52450043.0,0.391031
 Chainlink,LINK,chainlink,152255289.0,0.412075
-Lisk,LSK,lisk,308665459.0,2.76
-Litecoin,LTC,litecoin,3028214726.0,51.33
-MaidSafeCoin,MAID,maidsafecoin,99561531.0,0.216189
-IOTA,MIOTA,iota,1368854817.0,0.491561
-Metal,MTL,metal,23052174.0,0.704406
-NEO,NEO,neo,1038700000.0,15.98
-OmiseGO,OMG,omisego,469761984.0,3.42
-TenX,PAY,tenx,62328886.0,0.572259
+Lisk,LSK,lisk,135094905.0,1.2
+Litecoin,LTC,litecoin,1602141067.0,26.94
+MaidSafeCoin,MAID,maidsafecoin,62236802.0,0.137524
+IOTA,MIOTA,iota,837114591.0,0.301171
+Metal,MTL,metal,20821060.0,0.641333
+NEO,NEO,neo,395101861.0,6.08
+OmiseGO,OMG,omisego,466202350.0,3.32
+TenX,PAY,tenx,62085638.0,0.567781
 Power Ledger,POWR,power-ledger,67064604.0,0.176087
 QASH,QASH,qash,75633474.0,0.220373
 Quantstamp,QSP,quantstamp,25948246.0,0.042605
-Qtum,QTUM,qtum,370048057.0,4.14
+Qtum,QTUM,qtum,146514433.0,1.64
 Raiden Network Token,RDN,raiden-network-token,31585973.0,0.601832
-Augur,REP,augur,168630000.0,15.33
+Augur,REP,augur,70434907.0,6.4
 SALT,SALT,salt,64563344.0,0.736426
-Siacoin,SC,siacoin,376798315.0,0.006451
-Status,SNT,status,127110236.0,0.036159
-Steem,STEEM,steem,222658724.0,0.790023
-Stratis,STRAT,stratis,157535520.0,1.59
+Siacoin,SC,siacoin,93089821.0,0.00243
+Status,SNT,status,129024952.0,0.037178
+Steem,STEEM,steem,74200807.0,0.245831
+Stratis,STRAT,stratis,63057880.0,0.636158
 TRON,TRX,tron,1538313255.0,0.02348
-Tether,USDT,tether,1776421736.0,0.999433
-Waves,WAVES,waves,186000000.0,1.86
+Tether,USDT,tether,1859078678.0,1.0
+Waves,WAVES,waves,150272558.0,1.5
 Waltonchain,WTC,waltonchain,123779044.0,3.07
-NEM,XEM,nem,810000000.0,0.093227
-Stellar,XLM,stellar,4539255533.0,0.235706
-Monero,XMR,monero,1767794070.0,106.87
-XRP,XRP,ripple,18494536425.0,0.458685
-Zcash,ZEC,zcash,606939749.0,117.68
-0x,ZRX,0x,477363721.0,0.84829
+NEM,XEM,nem,645003769.0,0.071667
+Stellar,XLM,stellar,2208988598.0,0.115263
+Monero,XMR,monero,772577475.0,46.46
+XRP,XRP,ripple,12359838916.0,0.301997
+Zcash,ZEC,zcash,320461055.0,59.33
+0x,ZRX,0x,391030520.0,0.716499
