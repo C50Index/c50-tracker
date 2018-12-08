@@ -28,7 +28,7 @@
         let chartInstance = null;
         // Parse CSV in ruby
         let CoinsTable = function(data) {
-            let Coins = coins => coins.map((coin,i) => {
+            let Coins = coins => coins.sort((a, b) => (Number(a.marketcap) - Number(b.marketcap))).reverse().map((coin,i) => {
                 if(!coin) return;
                 if(!coin.name) return;
                 let name = coin.name
