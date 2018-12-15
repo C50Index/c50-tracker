@@ -40,7 +40,7 @@
                 let closePrice = Number(coin.close).toLocaleString();
 
 
-                return (h('tr', {onclick: () => drawChart(symbol), class: 'hover-bg-light-blue'},
+                return (h('tr', {onclick: () => drawChart(slug), class: 'hover-bg-light-blue'},
                     h('td', {class: 'tc', scope: 'col'}, "" + (i)),
                     h('td', {class: 'tl', scope: 'col'},
                     h('td', {class: 'dib', scope: 'col'},
@@ -76,10 +76,10 @@
             }
         }
 
-        function drawChart(symbol) {
+        function drawChart(slug) {
 
           let c50beginningPrice = null;
-          let comparedBeginningPrice = null;
+          let comparedMarketCap = null;
           let startTimeUnix = 1483196400; // 1/1/2017
 
           let startDate = moment().year(2017).startOf('year');
@@ -113,8 +113,8 @@
                         var datasetLabel=data.datasets[item.datasetIndex].label||'';
                         var date = item.xLabel;
                         var value = item.yLabel;
-                        if(datasetLabel === symbol) {
-                          return  datasetLabel + ': $'+ (value * comparedBeginningPrice).toLocaleString();
+                        if(datasetLabel === slug) {
+                          return  datasetLabel + ': $'+ (value * comparedMarketCap).toLocaleString();
                         } else {
                           return datasetLabel + ': ' + (value * c50beginningPrice).toLocaleString();
                           }
@@ -126,11 +126,11 @@
           }
 
           var ctx = document.getElementById('chart').getContext('2d');
-          readCSV('all-coins/c50-index.csv', {headers: true}).then((rows) => {
+          readCSV('https://cdn.answrly.com/c50/all-coins/c50-index.csv', {headers: true}).then((rows) => {
             // Date: "2016-12-30", C50Index: "101.21617490463628", market_weighted_divisor: "17019127036.0"
             return rows;
           }).then((c50IndexData) => {
-            readCSV(`all-coins/${symbol}.csv`, {headers: true}).then((rows) => {
+            readCSV(`https://cdn.answrly.com/c50/all-coins/${slug}.csv`, {headers: true}).then((rows) => {
 
               // calculate c50 index and normalize
               let c50Index = c50IndexData.map(o => {
@@ -139,18 +139,18 @@
                   return {x: time, y: (Number(o['C50Index']) - c50beginningPrice) / c50beginningPrice}
               })
 
-              let comparedBeginningPrice = null;
+              let comparedMarketCap = null;
                rows.sort((a, b) => Number(a['time_unix']) - Number(b['time_unix']))
                         .filter(r => {
-                          if(!comparedBeginningPrice && Number(r['time_unix']) >= startTimeUnix) {
-                            comparedBeginningPrice = Number(r['close']);
+                          if(!comparedMarketCap && Number(r['time_unix']) >= startTimeUnix) {
+                            comparedMarketCap = Number(r['marketcap']);
                             return true;
                           } else {
                             return false;
                           }
                         })[0]['close'];
 
-              // document.getElementById('test').innerHTML = "Compared price: " + Number(comparedBeginningPrice);
+              // document.getElementById('test').innerHTML = "Compared price: " + Number(comparedMarketCap);
 
               let sortedComparedRows = rows.sort((a,b) => Number(a['time_unix']) - Number(b['time_unix']) );
 
@@ -162,7 +162,7 @@
 
               let comparedData = sortedComparedRows.map(o => {
                 let time =  new moment(o['time_unix'], "X");
-                let normalizedPrice = (Number(o['close']) - comparedBeginningPrice) / comparedBeginningPrice;
+                let normalizedPrice = (Number(o['marketcap']) - comparedMarketCap) / comparedMarketCap;
 
                 if(time.unix() >= startTimeUnix && !!normalizedPrice) {
                   console.log(normalizedPrice);
@@ -177,7 +177,7 @@
 
                 draw(
                   {datasets: [
-                  {label: symbol, data: comparedData, backgroundColor: '#bcbca3', ...dataStyles},
+                  {label: slug, data: comparedData, backgroundColor: 'rgba(188,188,163,.6)', ...dataStyles},
                   {label: 'C50 Index', data: c50Index, backgroundColor: '#2875e3', ...dataStyles}
                 ]}
                 )
@@ -191,9 +191,9 @@
             clearInterval(tid);
             let drawScreen = bootstrap();
 
-            drawChart('BTC');
+            drawChart('bitcoin');
 
-            readCSV('all-coins/c50-tracker-summary.csv', {headers: true}).then(drawScreen);
+            readCSV('https://cdn.answrly.com/c50/all-coins/c50-tracker-summary.csv', {headers: true}).then(drawScreen);
           }, 100);
     </script>
 
@@ -204,7 +204,7 @@
             </div>
             <h2>C50 Tracker</h2>
             <p class='lead'>50 Cryptos in 1</p>
-            <a href='all-coins/c50-index.csv' download='c50-index.csv' style='color: #111111'; text-align: right;>(Download CSV)</a>
+            <a href='https://cdn.answrly.com/c50/all-coins/c50-index.csv' download='c50-index.csv' style='color: #111111'; text-align: right;>(Download CSV)</a>
         <canvas id="chart" style="width: 100%; height: 250px"></div>
         <div>technical Indicators: <span id='technicalIndicators'></span></div>
       </div>
