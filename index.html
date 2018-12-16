@@ -85,11 +85,17 @@
           let startDate = moment().year(2017).startOf('year');
 
           function draw(data) {
+            let container = document.getElementById('chartcontainer');
+            container.innerHTML = "<canvas id='chart' style='width: 100%; height: 250px'></canvas>";
+            var ctx = document.getElementById('chart').getContext('2d');
             if(!!chartInstance) chartInstance.destroy();
+
             chartInstance = new Chart(ctx, {
                 type: 'line',
                 data: data,
                 options: {scales: {
+                  responsive: true,
+                  maintainAspectRatio: false,
                   xAxes: [
                     {
                       type: 'time',
@@ -125,7 +131,6 @@
             });
           }
 
-          var ctx = document.getElementById('chart').getContext('2d');
           readCSV('https://cdn.answrly.com/c50/all-coins/c50-index.csv', {headers: true}).then((rows) => {
             // Date: "2016-12-30", C50Index: "101.21617490463628", market_weighted_divisor: "17019127036.0"
             return rows;
@@ -197,7 +202,7 @@
           }, 100);
     </script>
 
-    <div class='container'>
+    <div class='container' height='40vh'>
         <div class='w-100 tc'>
             <div class="w-100 dib tc">
                 <img class='tc' width='50px' src='http://www.c50index.com/wp-content/uploads/2018/11/1-newlogo-1-150x150.png' />
@@ -205,10 +210,12 @@
             <h2>C50 Tracker</h2>
             <p class='lead'>50 Cryptos in 1</p>
             <a href='https://cdn.answrly.com/c50/all-coins/c50-index.csv' download='c50-index.csv' style='color: #111111'; text-align: right;>(Download CSV)</a>
-        <canvas id="chart" style="width: 100%; height: 250px"></div>
+        <div style='width: 100%; height: 250px; display: block;' id='chartcontainer'>
+
+        </div>
         <div>technical Indicators: <span id='technicalIndicators'></span></div>
       </div>
-      <div id='coinsTable' style='overflow-y: scroll; display: absolute; width: 100%; height: 50%; bottom: 0px;'></div>
+      <div id='coinsTable' style='overflow-y: scroll; display: absolute; width: 100%; height: 50vh; bottom: 0px;'></div>
     </div>
     <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-98318782-11"></script>
