@@ -144,7 +144,6 @@
                   return {x: time, y: (Number(o['C50Index']) - c50beginningPrice) / c50beginningPrice}
               })
 
-              let comparedMarketCap = null;
                rows.sort((a, b) => Number(a['time_unix']) - Number(b['time_unix']))
                         .filter(r => {
                           if(!comparedMarketCap && Number(r['time_unix']) >= startTimeUnix) {
@@ -154,8 +153,6 @@
                             return false;
                           }
                         })[0]['close'];
-
-              // document.getElementById('test').innerHTML = "Compared price: " + Number(comparedMarketCap);
 
               let sortedComparedRows = rows.sort((a,b) => Number(a['time_unix']) - Number(b['time_unix']) );
 
