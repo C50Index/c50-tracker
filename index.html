@@ -19,9 +19,12 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src='./markact.js'></script>
     <script src="./technical-indicators.js"></script>
-	  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+	  <script src="https:///cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
 </head>
 <body>
     <script>
@@ -59,12 +62,17 @@
 
             return (
                 h('table', {class: 'table table-hover'},
+                  h('thead', {},
                     h('th', {class: 'tc', scope: 'col'}, '#'),
                     h('th', {class: 'tl', scope: 'col', onclick: () => bootstrap('name')}, 'Name'),
                     h('th', {class: 'tr', scope: 'col'}, 'Market Cap'),
-                    h('th', {class: 'tr', scope: 'col'}, 'Last Close'),
-                    Coins(data),
-                    ));
+                    h('th', {class: 'tr', scope: 'col'}, 'Last Close')
+                  ),
+                  h('tbody', {style: 'overflow-y: scroll; height: 500px;'},
+                    Coins(data)
+                  )
+                )
+              );
         }
 
         function bootstrap() {
@@ -197,22 +205,80 @@
 
             readCSV('https://cdn.answrly.com/c50/all-coins/c50-tracker-summary.csv', {headers: true}).then(drawScreen);
           }, 100);
+
+          var seriesOptions = [],
+          seriesCounter = 0,
+          slugs = ['bitcoin', 'ripple', 'tether'];
+
+          function createChart() {
+            Highcharts.stockChart('chartcontainer', {
+                rangeSelector: {
+                    selected: 4
+                },
+                yAxis: {
+                    labels: {
+                        formatter: function () {
+                            return (this.value > 0 ? ' + ' : '') + this.value + '%';
+                        }
+                    },
+                    plotLines: [{
+                        value: 0,
+                        width: 2,
+                        color: 'silver'
+                    }]
+                },
+                plotOptions: {
+                    series: {
+                        compare: 'percent',
+                        showInNavigator: true
+                    }
+                },
+
+                tooltip: {
+                    pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.change}%)<br/>',
+                    valueDecimals: 2,
+                    split: true
+                },
+
+                series: seriesOptions
+            });
+          }
+
+          $.each(slugs, function (i, slug) {
+            readCSV(`https://cdn.answrly.com/c50/all-coins/${slug}.csv`, {headers: true}).then((rows) => {
+              // $.getJSON('https://www.highcharts.com/samples/data/' + name.toLowerCase() + '-c.json',    function (data) {
+                  let data = rows.map((row) => [Number(row['time_unix']), Number(row['marketcap'])]);
+                  seriesOptions[i] = {
+                      name: slug,
+                      data: data
+                  };
+
+                  // As we're loading the data asynchronously, we don't know what order it will arrive. So
+                  // we keep a counter and create the chart when all the data is loaded.
+                  seriesCounter += 1;
+
+                  if (seriesCounter === slugs.length) {
+                      createChart();
+                  }
+              });
+          });
     </script>
 
     <div class='container' height='40vh'>
         <div class='w-100 tc'>
             <div class="w-100 dib tc">
-                <img class='tc' width='50px' src='http://www.c50index.com/wp-content/uploads/2018/11/1-newlogo-1-150x150.png' />
+                <img class='tc' width='100px' src='https://cdn.answrly.com/c50/logos/c50-logo-black.svg' />
             </div>
             <h2>C50 Tracker</h2>
             <p class='lead'>50 Cryptos in 1</p>
             <a href='https://cdn.answrly.com/c50/all-coins/c50-index.csv' download='c50-index.csv' style='color: #111111'; text-align: right;>(Download CSV)</a>
-        <div style='width: 100%; height: 250px; display: block;' id='chartcontainer'>
+        <!-- <div style='width: 100%; height: 250px; display: block;' id='chartcontainer'>
 
-        </div>
+        </div> -->
+            <div id="chartcontainer" style="height: 400px; min-width: 310px"></div>
         <div>technical Indicators: <span id='technicalIndicators'></span></div>
       </div>
-      <div id='coinsTable' style='overflow-y: scroll; display: absolute; width: 100%; height: 50vh; bottom: 0px;'></div>
+      <div id='coinsTable' style='display: absolute; width: 100%; height: 50vh; bottom: 0px;'></div>
     </div>
     <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-98318782-11"></script>
